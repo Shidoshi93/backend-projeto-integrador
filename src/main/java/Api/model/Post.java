@@ -3,12 +3,12 @@ package Api.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "post_pi")
+@Table(name = "post_pi", schema = "pi_db")
 public class Post {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer post_id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     @Column(name = "user_type", nullable = false, length = 50)
     private String user_type;
@@ -22,16 +22,28 @@ public class Post {
     @Column(name = "qtd", nullable = false, length = 50)
     private Integer qtd;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @Column(name = "user_id", nullable = false)
+    private Integer user_id;
 
-    public int getPost_id() {
-        return post_id;
+    public Post(){
+
     }
 
-    public void setPost_id(Integer post_id) {
-        this.post_id = post_id;
+    public Post(Integer post_id, String user_type, String donation_type, String description, Integer qtd, Integer user_id){
+        this.id = post_id;
+        this.user_type = user_type;
+        this.donation_type = donation_type;
+        this.description = description;
+        this.qtd = qtd;
+        this.user_id = user_id;
+    }
+
+    public Integer getPost_id() {
+        return id;
+    }
+
+    public void setPost_id(Integer id) {
+        this.id = id;
     }
 
     public String getUser_type() {
@@ -66,14 +78,16 @@ public class Post {
         this.qtd = qtd;
     }
 
-    public User getUser() { return user; }
+    public Integer getUser_id() { return user_id; }
 
-    public void setUser(User user) { this.user = user; }
+    public void setUser_id(Integer user_id) {
+        this.user_id = user_id;
+    }
 
     @Override
     public String toString() {
         return "Post: {" +
-                "id=" + this.post_id +
+                "id=" + this.id +
                 ", user_type='" + this.user_type + '\'' +
                 ", donation_type='" + this.donation_type + '\'' +
                 ", description='" + this.description + '\'' +

@@ -5,6 +5,7 @@ import javax.persistence.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 @Entity
 @Table(name= "user_pi", schema = "pi_db")
@@ -31,10 +32,6 @@ public class User {
 
     @Column(name = "user_img", nullable = true)
     private File user_photo;
-
-    public User(){
-
-    }
 
     public User(Integer id, String name, String email, String cpf, String cellphone, String password, File user_photo){
         this.id = id;
