@@ -41,7 +41,7 @@ public class UserController {
 
         return user.get();
     }
-    @RequestMapping(value = "/updateProduct/{id}", method = RequestMethod.PATCH)
+    @RequestMapping(value = "/updateUser/{id}", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.OK)
     public void updateUser(@PathVariable Integer id, @RequestBody User user) {
         userRepository.findById(id).map(record -> {
