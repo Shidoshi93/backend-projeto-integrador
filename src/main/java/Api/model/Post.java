@@ -8,7 +8,7 @@ public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer post_id;
+    private Integer id;
 
     @Column(name = "user_type", nullable = false, length = 50)
     private String user_type;
@@ -22,16 +22,19 @@ public class Post {
     @Column(name = "qtd", nullable = false, length = 50)
     private Integer qtd;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @Column(name = "user_id")
+    private Integer user_id;
+
+    @JoinColumn(name = "id")
+    @OneToOne(fetch = FetchType.LAZY)
     private User user;
 
     public int getPost_id() {
-        return post_id;
+        return id;
     }
 
-    public void setPost_id(Integer post_id) {
-        this.post_id = post_id;
+    public void setPost_id(Integer id) {
+        this.id = id;
     }
 
     public String getUser_type() {
@@ -66,14 +69,14 @@ public class Post {
         this.qtd = qtd;
     }
 
-    public User getUser() { return user; }
+    public Integer getUser() { return this.user_id; }
 
-    public void setUser(User user) { this.user = user; }
+    public void setUser(Integer user_id) { this.user_id = user_id; }
 
     @Override
     public String toString() {
         return "Post: {" +
-                "id=" + this.post_id +
+                "id=" + this.id +
                 ", user_type='" + this.user_type + '\'' +
                 ", donation_type='" + this.donation_type + '\'' +
                 ", description='" + this.description + '\'' +

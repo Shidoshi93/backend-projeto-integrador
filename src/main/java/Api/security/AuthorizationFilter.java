@@ -44,11 +44,14 @@ public class AuthorizationFilter extends BasicAuthenticationFilter{
 
     private UsernamePasswordAuthenticationToken authenticate(HttpServletRequest request){
         String token = request.getHeader(HEADER_NAME);
+        System.out.println(token);
+        String newToken = token.substring(7);
+        System.out.println(newToken);
 
-        if (token != null) {
+        if (newToken != null) {
             Claims user = Jwts.parser()
                     .setSigningKey(Keys.hmacShaKeyFor(KEY.getBytes()))
-                    .parseClaimsJws(token)
+                    .parseClaimsJws(newToken)
                     .getBody();
 
             if (user != null) {
