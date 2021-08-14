@@ -28,7 +28,8 @@ public class PostController {
     public Post getPost(@PathVariable Integer id) {
         Optional<Post> post = postRepository.findById(id);
 
-        return post.get();
+        return post.orElse(null);
+
     }
 
     @RequestMapping(value = "/getPosts", method = RequestMethod.GET)

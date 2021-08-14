@@ -32,6 +32,14 @@ public class User {
     @Column(name = "user_img", nullable = true)
     private File user_photo;
 
+    @JoinColumn(name = "user_id")
+    @OneToMany(fetch = FetchType.LAZY)
+    private Post posts;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private Address address;
+
     public User(){
 
     }
