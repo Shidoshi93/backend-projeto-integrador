@@ -14,6 +14,9 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Arrays;
+import java.util.Collections;
+
 import static Api.constants.SecurityConstants.AUTH_LIST;
 import static Api.constants.SecurityConstants.SIGN_UP_URL;
 
@@ -38,8 +41,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration conf  = new CorsConfiguration().applyPermitDefaultValues();
+        conf.setAllowedOriginPatterns(Collections.singletonList("http://localhost:3000"));
+        conf.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
+        conf.setAllowedMethods(Arrays.asList("GET","POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
+        conf.setExposedHeaders(Arrays.asList("Authorization", "content-type"));
+        conf.setAllowedHeaders(Arrays.asList("Authorization", "content-type"));
+
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+        source.registerCorsConfiguration("/**", conf);
         return source;
     }
 }
