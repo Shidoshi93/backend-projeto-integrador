@@ -5,6 +5,7 @@ import javax.persistence.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 @Entity
 @Table(name= "user_pi", schema = "pi_db")
@@ -32,12 +33,12 @@ public class User {
     @Column(name = "user_img", nullable = true)
     private File user_photo;
 
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "id")
     @OneToMany(fetch = FetchType.LAZY)
-    private Post posts;
+    private List<Post> posts;
 
+    @JoinColumn(name = "id")
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
     private Address address;
 
     public User(){
