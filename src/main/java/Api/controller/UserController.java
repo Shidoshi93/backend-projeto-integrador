@@ -22,7 +22,7 @@ public class UserController {
     PasswordEncoder bCryptPasswordEncoder;
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
+
     public User saveUser(@RequestBody User user){
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
@@ -35,11 +35,11 @@ public class UserController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.OK)
+
     public User getUserById(@PathVariable("id") Integer id){
         Optional<User> user = userRepository.findById(id);
 
-        return user.get();
+        return user.orElse(null);
     }
     @RequestMapping(value = "/updateUser/{id}", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.OK)

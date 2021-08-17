@@ -1,5 +1,7 @@
 package Api.model;
 
+import org.springframework.test.web.servlet.MvcResult;
+
 import javax.imageio.ImageIO;
 import javax.persistence.*;
 import java.awt.image.BufferedImage;
@@ -43,6 +45,15 @@ public class User {
 
     public User(){
 
+    }
+
+    public User(Integer id, String name, String email, String cpf, String cellphone, String password){
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.cpf = cpf;
+        this.cellphone = cellphone;
+        this.password = password;
     }
 
     public User(Integer id, String name, String email, String cpf, String cellphone, String password, File user_photo){
