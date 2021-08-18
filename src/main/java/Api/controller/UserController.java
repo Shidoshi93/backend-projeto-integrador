@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,24 +24,27 @@ public class UserController {
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
 
-    public User saveUser(@RequestBody User user){
+    public User saveUser(@RequestBody User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<User> listUsers(){
+    public List<User> listUsers() {
         return (List<User>) userRepository.findAll();
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-
-    public User getUserById(@PathVariable("id") Integer id){
+    public User getUserById(@PathVariable("id") Integer id) {
         Optional<User> user = userRepository.findById(id);
-
-        return user.orElse(null);
+        if(user.isPresent()){
+            return user.get();
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado0");
+        }
     }
+
     @RequestMapping(value = "/updateUser/{id}", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.OK)
     public void updateUser(@PathVariable Integer id, @RequestBody User user) {
@@ -53,11 +57,5 @@ public class UserController {
             User updated = userRepository.save(record);
             return ResponseEntity.ok().body(updated);
         }).orElse(ResponseEntity.notFound().build());
-    }
-
-    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUser(@PathVariable("id") Integer id) {
-        userRepository.deleteById(id);
     }
 }

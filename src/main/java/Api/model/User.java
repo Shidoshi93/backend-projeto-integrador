@@ -4,6 +4,7 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import javax.imageio.ImageIO;
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -66,11 +67,11 @@ public class User {
         this.user_photo = user_photo;
     }
 
-    public Integer getUser_id() {
+    public Integer getId() {
         return id;
     }
 
-    public void setUser_id(Integer id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

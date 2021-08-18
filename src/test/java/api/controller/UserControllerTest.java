@@ -25,13 +25,13 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(UserController.class)
 @AutoConfigureMockMvc
-@WithMockUser(username = "rachel@gmail.com")
+@WithMockUser(username = "josefina@gmail.com")
 public class UserControllerTest {
 
     @Autowired
@@ -39,7 +39,6 @@ public class UserControllerTest {
 
     @MockBean
     private UserRepository userRepository;
-    private User userTest;
 
     @Test
     public void shouldReturnOneUserFindById() throws Exception {
@@ -49,24 +48,15 @@ public class UserControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("user_id").value(2));
+                .andExpect(jsonPath("id").value(2));
     }
 
     @Test
-    public void shouldNotReturnOneUserFindByIdWithoutParam() throws Exception {
-        Optional<User> user = Optional.of(new User(2,"Rachel", "rachel@gmail.com","1234567890","99999999", "123456"));
-        when(userRepository.findById(2)).thenReturn(user);
-        this.mockMvc.perform(get("/user/")
+    public void shouldNotReturnUserWithoutParam() throws Exception {
+       this.mockMvc.perform(get("/user/")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
 
-    }
-
-   @Test
-    public void shouldNotReturnOneUserFindByIdWithDiferentParam() throws Exception {
-        this.mockMvc.perform(get("/user/2")
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNoContent());
     }
 
     @Test
@@ -80,13 +70,51 @@ public class UserControllerTest {
     }
 
     @Test
-    public void shouldAddUser() throws Exception {
-        User user = new User(2,"Rachel", "rachel@gmail.com","1234567890","99999999", "123456");
+    public void shouldDeleteUserById() throws Exception {
+        this.mockMvc.perform(delete("/user/delete/2")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    public void shouldSaveUser() throws Exception {
+        User user = new User(2,"Rachel", "rachel@gmail.com","1234567890","99999999", "a1b2c3");
         Mockito.when(userRepository.save(user)).thenReturn(user);
         this.mockMvc.perform(MockMvcRequestBuilders.post("/user/add")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(user)))
-                .andExpect(MockMvcResultMatchers.status().isCreated());
+                .andExpect(status().isCreated());
+    }
+
+
+ /*
+
+ @Test
+    public void shouldUpdateUserById() throws Exception {
+        Optional<User> user = Optional.of(new User(2,"Rachel", "rachel@gmail.com","1234567890","99999999", "a1b2c3"));
+        when(userRepository.findById(2)).thenReturn(user);
+        this.mockMvc.perform(patch("/user/updateUser/2")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().)
+                .andExpect(status().isCreated());
+    }
+
+    @Test
+    public void shouldSaveUser() throws Exception {
+        User user = new User(2,"Rachel", "rachel@gmail.com","1234567890","99999999", "a1b2c3");
+        Mockito.when(userRepository.save(user)).thenReturn(user);
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/user/add")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(user)))
+                .andExpect(status().isCreated());
+    }
+
+    @Test
+    public void shouldNotReturnOneUserFindByIdWithDiferentParam() throws Exception {
+        this.mockMvc.perform(get("/user/2")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
     }
 
     @Test
@@ -96,17 +124,16 @@ public class UserControllerTest {
         this.mockMvc.perform(MockMvcRequestBuilders.post("/user/add")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(user)))
-                .andExpect(MockMvcResultMatchers.status().isNoContent());
+                .andExpect(status().isNoContent());
     }
 
-  /* public void shouldReturnUserNotFoundById() throws Exception {
-        Optional<User> user = Optional.of(new User(2,"Rachel", "rachel@gmail.com","1234567890","99999999", "123456"));
-        when(userRepository.findById(1)).thenReturn(user);
-        this.mockMvc.perform(get("/user/1")
+    @Test
+    public void shouldReturnUserNotFoundById() throws Exception {
+      this.mockMvc.perform(get("/user/1")
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("user_id").value(1));
-    }*/
+                .andExpect(status().isNotFound());
+    }
+      */
 
 
 

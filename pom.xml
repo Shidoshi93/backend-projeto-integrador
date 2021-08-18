@@ -105,6 +105,11 @@
             <artifactId>spring-security-web</artifactId>
             <version>5.5.1</version>
         </dependency>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>2.0.1.Final</version>
+        </dependency>
         <!-- Liberam esta dependencia somente se queiram que crie a estrutura do banco
         <dependency>
             <groupId>org.flywaydb</groupId>
