@@ -1,10 +1,6 @@
 package Api.model;
 
-import javax.imageio.ImageIO;
 import javax.persistence.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 @Entity
@@ -109,14 +105,4 @@ public class User {
         this.user_photo = user_photo;
     }
 
-    /*public void subirFotoPerfil() {
-        BufferedImage imagemQualquer = null;
-        try {
-            imagemQualquer = ImageIO.read(new File("caminho_da_imagem.jpg"));
-        } catch (IOException e) {
-        }
-*/
-        //        NomeDaClasse instancia = new NomeDaClasse();
-        //        instancia.setImage(imagemQualquer);
-    }
 }
