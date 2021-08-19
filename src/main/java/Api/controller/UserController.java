@@ -23,10 +23,14 @@ public class UserController {
     PasswordEncoder bCryptPasswordEncoder;
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-
+    @ResponseStatus(HttpStatus.CREATED)
     public User saveUser(@RequestBody User user) {
+        if(user.getEmail().equals(userRepository.findByEmail(user.getEmail()))) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Usuário já cadastrado.");
+        }
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
+        userRepository.save(user);
+        return user;
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)

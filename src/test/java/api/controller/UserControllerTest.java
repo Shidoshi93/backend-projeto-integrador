@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -39,6 +40,7 @@ public class UserControllerTest {
 
     @MockBean
     private UserRepository userRepository;
+    private UserController userController;
 
     @Test
     public void shouldReturnOneUserFindById() throws Exception {
@@ -48,7 +50,12 @@ public class UserControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("id").value(2));
+                .andExpect(jsonPath("id").value(2))
+                .andExpect(jsonPath("name").value("Rachel"))
+                .andExpect(jsonPath("email").value("rachel@gmail.com"))
+                .andExpect(jsonPath("cpf").value("1234567890"))
+                .andExpect(jsonPath("cellphone").value("99999999"))
+                .andExpect(jsonPath("password").value("123456"));
     }
 
     @Test
@@ -78,14 +85,21 @@ public class UserControllerTest {
 
     @Test
     public void shouldSaveUser() throws Exception {
-        User user = new User(2,"Rachel", "rachel@gmail.com","1234567890","99999999", "a1b2c3");
+        User user = new User(2,"Rachel", "rachel@gmail.com","1234567890","99999999", "123456");
         Mockito.when(userRepository.save(user)).thenReturn(user);
         this.mockMvc.perform(MockMvcRequestBuilders.post("/user/add")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(user)))
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("id").value(2))
+                .andExpect(jsonPath("name").value("Rachel"))
+                .andExpect(jsonPath("email").value("rachel@gmail.com"))
+                .andExpect(jsonPath("cpf").value("1234567890"))
+                .andExpect(jsonPath("cellphone").value("99999999"));
     }
 
+}
 
  /*
 
@@ -100,17 +114,7 @@ public class UserControllerTest {
                 .andExpect(status().isCreated());
     }
 
-    @Test
-    public void shouldSaveUser() throws Exception {
-        User user = new User(2,"Rachel", "rachel@gmail.com","1234567890","99999999", "a1b2c3");
-        Mockito.when(userRepository.save(user)).thenReturn(user);
-        this.mockMvc.perform(MockMvcRequestBuilders.post("/user/add")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(user)))
-                .andExpect(status().isCreated());
-    }
-
-    @Test
+   @Test
     public void shouldNotReturnOneUserFindByIdWithDiferentParam() throws Exception {
         this.mockMvc.perform(get("/user/2")
                 .accept(MediaType.APPLICATION_JSON))
@@ -137,4 +141,4 @@ public class UserControllerTest {
 
 
 
-}
+
