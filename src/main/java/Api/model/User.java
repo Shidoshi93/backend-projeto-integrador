@@ -31,7 +31,7 @@ public class User {
     private String password;
 
     @Column(name = "user_img", nullable = true)
-    private File user_photo;
+    private String user_photo;
 
     @JoinColumn(name = "id")
     @OneToMany(fetch = FetchType.LAZY)
@@ -45,7 +45,7 @@ public class User {
 
     }
 
-    public User(Integer id, String name, String email, String cpf, String cellphone, String password, File user_photo){
+    public User(Integer id, String name, String email, String cpf, String cellphone, String password, String user_photo){
         this.id = id;
         this.name = name;
         this.email = email;
@@ -101,21 +101,21 @@ public class User {
         this.password = password;
     }
 
-    public File getUser_photo() {
+    public String getUser_photo() {
         return user_photo;
     }
 
-    public void setUser_photo(File user_photo) {
+    public void setUser_photo(String user_photo) {
         this.user_photo = user_photo;
     }
 
-    public void subirFotoPerfil() {
+    /*public void subirFotoPerfil() {
         BufferedImage imagemQualquer = null;
         try {
             imagemQualquer = ImageIO.read(new File("caminho_da_imagem.jpg"));
         } catch (IOException e) {
         }
-
+*/
         //        NomeDaClasse instancia = new NomeDaClasse();
         //        instancia.setImage(imagemQualquer);
     }
