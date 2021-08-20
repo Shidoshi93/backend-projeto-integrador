@@ -19,9 +19,7 @@ public class PostController {
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public void addPost(@RequestBody Post post) {
-        postRepository.save(post);
-    }
+    public Post addPost(@RequestBody Post post) { return postRepository.save(post); }
 
     @RequestMapping(value = "/getPost/{id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
