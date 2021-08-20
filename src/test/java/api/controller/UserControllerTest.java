@@ -6,20 +6,27 @@ import Api.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-
+import org.springframework.test.web.servlet.ResultMatcher;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -39,7 +46,7 @@ public class UserControllerTest {
 
     @Test
     public void shouldSaveUser() throws Exception {
-        User user = new User(2,"Rachel", "rachel@gmail.com","1234567890","99999999", "123456", "ajkhskaujoaqas");
+        User user = new User(2,"Rachel", "rachel@gmail.com","1234567890","99999999", "123456");
         when(userRepository.save(user)).thenReturn(user);
         this.mockMvc.perform(post("/user/add")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -55,8 +62,8 @@ public class UserControllerTest {
 
     @Test
     public void shouldNotSaveUserWithSameEmail() throws Exception {
-        User user = new User(2,"Rachel", "rachel@gmail.com","1234567890","99999999", "123456", "ajkhskaujoaqas");
-        User user3 = new User(3,"Josefina", "rachel@gmail.com","0123456789","88888888", "123456", "ajkhskaujoaqas");
+        User user = new User(2,"Rachel", "rachel@gmail.com","1234567890","99999999", "123456");
+        User user3 = new User(3,"Josefina", "rachel@gmail.com","0123456789","88888888", "123456");
 
         when(userRepository.save(user)).thenReturn(user);
         this.mockMvc.perform(post("/user/add")
@@ -81,7 +88,7 @@ public class UserControllerTest {
 
     @Test
     public void shouldReturnOneUserFindById() throws Exception {
-        Optional<User> user = Optional.of(new User(2,"Rachel", "rachel@gmail.com","1234567890","99999999", "123456", "ajkhskaujoaqas"));
+        Optional<User> user = Optional.of(new User(2,"Rachel", "rachel@gmail.com","1234567890","99999999", "123456"));
         when(userRepository.findById(2)).thenReturn(user);
         this.mockMvc.perform(get("/user/2")
                 .accept(MediaType.APPLICATION_JSON))
@@ -97,7 +104,7 @@ public class UserControllerTest {
 
     @Test
     public void shouldNotReturnUserWithoutParam() throws Exception {
-        Optional<User> user = Optional.of(new User(2,"Rachel", "rachel@gmail.com","1234567890","99999999", "123456", "ajkhskaujoaqas"));
+        Optional<User> user = Optional.of(new User(2,"Rachel", "rachel@gmail.com","1234567890","99999999", "123456"));
         when(userRepository.findById(0)).thenReturn(user);
         this.mockMvc.perform(get("/user/")
                 .accept(MediaType.APPLICATION_JSON))
@@ -107,7 +114,7 @@ public class UserControllerTest {
 
     @Test
     public void shouldNotReturnUserWithDiferentParam() throws Exception {
-       User user2 = new User(2,"Rachel", "rachel@gmail.com","1234567890","99999999", "123456", "ajkhskaujoaqas");
+       User user2 = new User(2,"Rachel", "rachel@gmail.com","1234567890","99999999", "123456");
        when(userRepository.findById(2)).thenReturn(Optional.of(user2));
        this.mockMvc.perform(get("/user/4")
                 .accept(MediaType.APPLICATION_JSON))
@@ -126,7 +133,7 @@ public class UserControllerTest {
 
     @Test
     public void shouldDeleteUserById() throws Exception {
-        Optional<User> user = Optional.of(new User(2,"Rachel", "rachel@gmail.com","1234567890","99999999", "123456", "ajkhskaujoaqas"));
+        Optional<User> user = Optional.of(new User(2,"Rachel", "rachel@gmail.com","1234567890","99999999", "123456"));
         when(userRepository.findById(2)).thenReturn(user);
         this.mockMvc.perform(delete("/user/delete/2")
                 .accept(MediaType.APPLICATION_JSON))
@@ -135,7 +142,7 @@ public class UserControllerTest {
 
     @Test
     public void shouldNotDeleteNotFoundUser() throws Exception {
-        Optional<User> user = Optional.of(new User(2,"Rachel", "rachel@gmail.com","1234567890","99999999", "123456", "ajkhskaujoaqas"));
+        Optional<User> user = Optional.of(new User(2,"Rachel", "rachel@gmail.com","1234567890","99999999", "123456"));
         when(userRepository.findById(2)).thenReturn(user);
         this.mockMvc.perform(delete("/user/delete/1")
                 .accept(MediaType.APPLICATION_JSON))
@@ -155,13 +162,13 @@ public class UserControllerTest {
 
     @Test
     public void shouldUpdateOnlyUserNameById() throws Exception {
-        User user = new User(2,"Rachel", "rachel@gmail.com","1234567890","99999999", "123456", "ajkhskaujoaqas");
+        User user = new User(2,"Rachel", "rachel@gmail.com","1234567890","99999999", "123456");
         when(userRepository.save(user)).thenReturn(user);
         this.mockMvc.perform(post("/user/add")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(user)));
-        User user3 = new User(2,"Josefina", "rachel@gmail.com","1234567890","99999999", "123456", "ajkhskaujoaqas");
+        User user3 = new User(2,"Josefina", "rachel@gmail.com","1234567890","99999999", "123456");
         when(userRepository.findById(2)).thenReturn(Optional.of(user3));
         this.mockMvc.perform(patch("/user/update/2")
                 .accept(MediaType.APPLICATION_JSON)
