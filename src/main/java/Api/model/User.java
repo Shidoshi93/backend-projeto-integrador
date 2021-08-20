@@ -42,6 +42,7 @@ public class User {
     }
 
     public User(Integer id, String name, String email, String cpf, String cellphone, String password, String user_photo){
+
         this.id = id;
         this.name = name;
         this.email = email;
@@ -51,11 +52,11 @@ public class User {
         this.user_photo = user_photo;
     }
 
-    public Integer getUser_id() {
+    public Integer getId() {
         return id;
     }
 
-    public void setUser_id(Integer id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
