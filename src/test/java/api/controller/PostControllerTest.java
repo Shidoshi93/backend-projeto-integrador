@@ -15,8 +15,12 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
@@ -32,20 +36,50 @@ public class PostControllerTest {
     PostRepository postRepository;
 
     @Test
-    public void shouldSavePost() throws Exception {
+    public void shouldNotReturnPostWithoutParam() throws Exception {
+        Optional<Post> post = Optional.of(new Post(2, "doador", "cesta básica", "Preciso de duas cestas básicas", 2, "ativo",2));
+        when(postRepository.findById(0)).thenReturn(post);
+        this.mockMvc.perform(get("/post/getPost/")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+
+    }
+
+    @Test
+    public void shouldNotReturnUserWithDiferentParam() throws Exception {
         Post post = new Post(2, "doador", "cesta básica", "Preciso de duas cestas básicas", 2, "ativo",2);
-        when(postRepository.save(post)).thenReturn(post);
-        this.mockMvc.perform(post("/post/add")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(post)))
-                .andExpect(status().isCreated())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("post_id").value(2))
-                .andExpect(jsonPath("user_type").value("doador"))
-                .andExpect(jsonPath("donation_type").value("cesta básica"))
-                .andExpect(jsonPath("description").value("Preciso de duas cestas básicas"))
-                .andExpect(jsonPath("qtd").value(2))
-                .andExpect(jsonPath("user").value(2));
+        when(postRepository.findById(2)).thenReturn(Optional.of(post));
+        this.mockMvc.perform(get("/post/getPost/4")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void shouldReturnAllPosts() throws Exception {
+        List<Post> listPosts = new ArrayList<>();
+        when(postRepository.findAll()).thenReturn(listPosts);
+        this.mockMvc.perform(get("/post/getPosts")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
+    }
+
+    @Test
+    public void shouldDeletePostById() throws Exception {
+        Optional<Post> post = Optional.of(new Post(2, "doador", "cesta básica", "Preciso de duas cestas básicas", 2, "ativo",2));
+        when(postRepository.findById(2)).thenReturn(post);
+        this.mockMvc.perform(delete("/post/delete/2")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    public void shouldNotDeletePostNotFound() throws Exception {
+        Optional<Post> post = Optional.of(new Post(2, "doador", "cesta básica", "Preciso de duas cestas básicas", 2, "ativo",2));
+        when(postRepository.findById(2)).thenReturn(post);
+        this.mockMvc.perform(delete("/post/delete/1")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
 
 
