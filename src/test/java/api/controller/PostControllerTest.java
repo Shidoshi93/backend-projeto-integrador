@@ -64,23 +64,5 @@ public class PostControllerTest {
                 .andReturn();
     }
 
-    @Test
-    public void shouldDeletePostById() throws Exception {
-        Optional<Post> post = Optional.of(new Post(2, "doador", "cesta básica", "Preciso de duas cestas básicas", 2, "ativo",user));
-        when(postRepository.findById(2)).thenReturn(post);
-        this.mockMvc.perform(delete("/post/2")
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNoContent());
-    }
-
-    @Test
-    public void shouldNotDeletePostNotFound() throws Exception {
-        Optional<Post> post = Optional.of(new Post(2, "doador", "cesta básica", "Preciso de duas cestas básicas", 2, "ativo",user));
-        when(postRepository.findById(2)).thenReturn(post);
-        this.mockMvc.perform(delete("/post/1")
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
-    }
-
 
 }
