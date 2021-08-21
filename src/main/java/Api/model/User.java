@@ -12,7 +12,7 @@ public class User {
     private Integer id;
 
     @Column(nullable = false, name = "user_name")
-    private String name;
+    private String user_name;
 
     @Column(name = "email", nullable = false, unique = true)
     private String email;
@@ -27,15 +27,7 @@ public class User {
     private String password;
 
     @Column(name = "user_img", nullable = true)
-    private String user_photo;
-
-    @JoinColumn(name = "id")
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<Post> posts;
-
-    @JoinColumn(name = "id")
-    @OneToOne(fetch = FetchType.LAZY)
-    private Address address;
+    private String user_img;
 
     public User(){
 
@@ -44,12 +36,12 @@ public class User {
     public User(Integer id, String name, String email, String cpf, String cellphone, String password, String user_photo){
 
         this.id = id;
-        this.name = name;
+        this.user_name = name;
         this.email = email;
         this.cpf = cpf;
         this.cellphone = cellphone;
         this.password = password;
-        this.user_photo = user_photo;
+        this.user_img = user_photo;
     }
 
     public Integer getId() {
@@ -60,12 +52,12 @@ public class User {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getUser_name() {
+        return user_name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUser_name(String user_name) {
+        this.user_name = user_name;
     }
 
     public String getEmail() {
@@ -84,7 +76,9 @@ public class User {
         this.cpf = cpf;
     }
 
-    public String getCellphone() { return cellphone; }
+    public String getCellphone() {
+        return cellphone;
+    }
 
     public void setCellphone(String cellphone) {
         this.cellphone = cellphone;
@@ -98,12 +92,12 @@ public class User {
         this.password = password;
     }
 
-    public String getUser_photo() {
-        return user_photo;
+    public String getUser_img() {
+        return user_img;
     }
 
-    public void setUser_photo(String user_photo) {
-        this.user_photo = user_photo;
+    public void setUser_img(String user_img) {
+        this.user_img = user_img;
     }
 
 }
