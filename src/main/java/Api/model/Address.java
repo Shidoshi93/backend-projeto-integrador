@@ -19,8 +19,8 @@ public class Address {
     @Column(name = "state", nullable = false, length = 50)
     private String state;
 
-    @Column(name = "postal_code", nullable = false, length = 50)
-    private String postal_code;
+    @Column(name = "postalCode", nullable = false, length = 50)
+    private String postalCode;
 
     @OneToOne
     @JoinColumn(name = "user_id")
@@ -30,12 +30,12 @@ public class Address {
 
     }
 
-    public Address(Integer id, String neighborhood, String city, String state, String postal_code, User user) {
+    public Address(Integer id, String neighborhood, String city, String state, String postalCode, User user) {
         this.id = id;
         this.neighborhood = neighborhood;
         this.city = city;
         this.state = state;
-        this.postal_code = postal_code;
+        this.postalCode = postalCode;
         this.user = user;
     }
 
@@ -65,10 +65,10 @@ public class Address {
         this.state = state;
     }
 
-    public String getPostal_code() { return postal_code; }
+    public String getPostalCode() { return postalCode; }
 
-    public void setPostal_code(String postal_code) {
-        this.postal_code = postal_code;
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
     }
 
     public User getUser() { return user; }
