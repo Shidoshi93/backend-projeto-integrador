@@ -3,12 +3,12 @@ package Api.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "address")
+@Table(name = "address_pi")
 public class Address {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer address_id;
+    private Integer id;
 
     @Column(name = "neighborhood", nullable = false)
     private String neighborhood;
@@ -22,17 +22,26 @@ public class Address {
     @Column(name = "postal_code", nullable = false, length = 50)
     private String postal_code;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Address (){
+    public Address(){
 
     }
 
-    public Integer getAddress_id() { return address_id; }
+    public Address(Integer id, String neighborhood, String city, String state, String postal_code, User user) {
+        this.id = id;
+        this.neighborhood = neighborhood;
+        this.city = city;
+        this.state = state;
+        this.postal_code = postal_code;
+        this.user = user;
+    }
 
-    public void setAddress_id(Integer address_id) { this.address_id = address_id; }
+    public Integer getAddress_id() { return id; }
+
+    public void setAddress_id(Integer id) { this.id = id; }
 
     public String getNeighborhood() { return neighborhood; }
 

@@ -22,12 +22,26 @@ public class Post {
     @Column(name = "qtd", nullable = false, length = 50)
     private Integer qtd;
 
-    @Column(name = "user_id")
-    private Integer user_id;
+    @Column(name = "status")
+    private String status;
 
-    @JoinColumn(name = "id")
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
+
+    public Post(){
+
+    }
+
+    public Post(Integer id, String user_type, String donation_type, String description, Integer qtd, String status, User user) {
+        this.id = id;
+        this.user_type = user_type;
+        this.donation_type = donation_type;
+        this.description = description;
+        this.qtd = qtd;
+        this.status = status;
+        this.user = user;
+    }
 
     public int getPost_id() {
         return id;
@@ -61,6 +75,14 @@ public class Post {
         this.description = description;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public Integer getQtd() {
         return qtd;
     }
@@ -69,9 +91,13 @@ public class Post {
         this.qtd = qtd;
     }
 
-    public Integer getUser() { return this.user_id; }
+    public User getUser() {
+        return user;
+    }
 
-    public void setUser(Integer user_id) { this.user_id = user_id; }
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     @Override
     public String toString() {
