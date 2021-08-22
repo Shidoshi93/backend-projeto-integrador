@@ -1,6 +1,7 @@
 package Api.model;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
@@ -26,6 +27,9 @@ public class Post {
     @Column(name = "status")
     private String status;
 
+    @Column(name = "created_at")
+    private Timestamp created_at;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -49,7 +53,7 @@ public class Post {
         this.address = address;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -95,6 +99,14 @@ public class Post {
 
     public void setQtd(Integer qtd) {
         this.qtd = qtd;
+    }
+
+    public Timestamp getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(Timestamp created_at) {
+        this.created_at = created_at;
     }
 
     public User getUser() {

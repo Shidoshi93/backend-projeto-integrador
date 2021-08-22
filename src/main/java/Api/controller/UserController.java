@@ -57,7 +57,7 @@ public class UserController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public User getUserByEmail(@RequestParam ("email") String email) {
+    public User getUserByEmail(@RequestParam("email") String email) {
         Optional<User> optionalUser = Optional.ofNullable(userRepository.findByEmail(email));
         if (optionalUser.isPresent()){
             return optionalUser.get();
