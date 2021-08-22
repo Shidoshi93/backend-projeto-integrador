@@ -1,6 +1,7 @@
 package api.repository;
 
 import Api.controller.PostController;
+import Api.model.Address;
 import Api.model.Post;
 import Api.model.User;
 import Api.repository.PostRepository;
@@ -31,13 +32,14 @@ public class PostRepositoryTest {
     @Autowired
     private MockMvc mockMvc;
     private  User user;
+    private Address address;
 
     @MockBean
     PostRepository postRepository;
 
     @Test
     public void shouldSavePost() throws Exception {
-        Post post = new Post(2, "doador", "cesta básica", "Preciso de duas cestas básicas", 2, "ativo",user);
+        Post post = new Post(2, "doador", "cesta básica", "Preciso de duas cestas básicas", 2, "ativo",user, address);
         when(postRepository.save(post)).thenReturn(post);
         this.mockMvc.perform(post("/post/save")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -47,7 +49,7 @@ public class PostRepositoryTest {
 
     @Test
     public void shouldReturnOnePostFindById() throws Exception {
-        Optional<Post> post = Optional.of(new Post(2, "doador", "cesta básica", "Preciso de duas cestas básicas", 2, "ativo",user));
+        Optional<Post> post = Optional.of(new Post(2, "doador", "cesta básica", "Preciso de duas cestas básicas", 2, "ativo",user, address));
         when(postRepository.findById(2)).thenReturn(post);
         this.mockMvc.perform(get("/post/2")
                 .accept(MediaType.APPLICATION_JSON))
@@ -65,7 +67,7 @@ public class PostRepositoryTest {
 
     @Test
     public void shouldUpdatePostById() throws Exception {
-        Post post = new Post(2, "doador", "cesta básica", "Preciso de duas cestas básicas", 2, "ativo",user);
+        Post post = new Post(2, "doador", "cesta básica", "Preciso de duas cestas básicas", 2, "ativo",user, address);
         when(postRepository.findById(2)).thenReturn(Optional.of(post));
         this.mockMvc.perform(patch("/post/2")
                 .accept(MediaType.APPLICATION_JSON)
@@ -76,13 +78,13 @@ public class PostRepositoryTest {
 
     @Test
     public void shouldUpdateOnlyPostStatusById() throws Exception {
-        Post post = new Post(2, "doador", "cesta básica", "Preciso de duas cestas básicas", 2, "ativo",user);
+        Post post = new Post(2, "doador", "cesta básica", "Preciso de duas cestas básicas", 2, "ativo",user, address);
         when(postRepository.save(post)).thenReturn(post);
         this.mockMvc.perform(post("/post/save")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(post)));
-        Post post2 = new Post(2, "doador", "cesta básica", "Preciso de duas cestas básicas", 2, "inativo",user);
+        Post post2 = new Post(2, "doador", "cesta básica", "Preciso de duas cestas básicas", 2, "inativo",user, address);
         when(postRepository.findById(2)).thenReturn(Optional.of(post2));
         this.mockMvc.perform(patch("/post/2")
                 .accept(MediaType.APPLICATION_JSON)
@@ -101,7 +103,7 @@ public class PostRepositoryTest {
 
     @Test
     public void shouldDeletePostById() throws Exception {
-        Optional<Post> post = Optional.of(new Post(2, "doador", "cesta básica", "Preciso de duas cestas básicas", 2, "ativo",user));
+        Optional<Post> post = Optional.of(new Post(2, "doador", "cesta básica", "Preciso de duas cestas básicas", 2, "ativo",user, address));
         when(postRepository.findById(2)).thenReturn(post);
         this.mockMvc.perform(delete("/post/2")
                 .accept(MediaType.APPLICATION_JSON))
@@ -110,7 +112,7 @@ public class PostRepositoryTest {
 
     @Test
     public void shouldNotDeletePostNotFound() throws Exception {
-        Optional<Post> post = Optional.of(new Post(2, "doador", "cesta básica", "Preciso de duas cestas básicas", 2, "ativo",user));
+        Optional<Post> post = Optional.of(new Post(2, "doador", "cesta básica", "Preciso de duas cestas básicas", 2, "ativo",user, address));
         when(postRepository.findById(2)).thenReturn(post);
         this.mockMvc.perform(delete("/post/1")
                 .accept(MediaType.APPLICATION_JSON))

@@ -39,9 +39,9 @@ public class Address {
         this.user = user;
     }
 
-    public Integer getAddress_id() { return id; }
+    public Integer getId() { return id; }
 
-    public void setAddress_id(Integer id) { this.id = id; }
+    public void setId(Integer id) { this.id = id; }
 
     public String getNeighborhood() { return neighborhood; }
 
