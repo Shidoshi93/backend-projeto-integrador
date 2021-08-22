@@ -1,7 +1,6 @@
 package Api.controller;
 
 import Api.model.Address;
-import Api.model.User;
 import Api.repository.AddressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,19 +19,20 @@ public class AddressController {
     AddressRepository addressRepository;
 
     @PostMapping("/save")
+    @ResponseStatus(HttpStatus.CREATED)
     public String saveAddress(@RequestBody Address address){
-
-        Address newAddress = addressRepository.save(address);
+        addressRepository.save(address);
         return "Endereço salvo com sucesso.";
     }
 
     @GetMapping("/listAll")
+    @ResponseStatus(HttpStatus.OK)
     public List<Address> getAddress(){
         return (List<Address>) addressRepository.findAll();
     }
 
-    //LISTA POR ID
-    @RequestMapping(value = "/address/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
     public Address getAddressById(@PathVariable("id") Integer id) {
         Optional<Address> optionalAddress = addressRepository.findById(id);
         if (optionalAddress.isPresent()){
@@ -41,8 +41,8 @@ public class AddressController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Endereço não encontrado!");
         }
     }
-    //ATUALIZA
-    @RequestMapping(value = "/update/{id}", method = RequestMethod.PATCH)
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.OK)
     public Address updateAddress(@PathVariable Integer id, @RequestBody Address address) {
         Optional<Address> optionalAddress = addressRepository.findById(id);
@@ -51,7 +51,7 @@ public class AddressController {
                 record.setCity(address.getCity());
                 record.setNeighborhood(address.getNeighborhood());
                 record.setState(address.getState());
-                record.setPostal_code(address.getPostal_code());
+                record.setPostalCode(address.getPostalCode());
                 Address updated = addressRepository.save(record);
                 return ResponseEntity.ok().body(updated);
             });
@@ -60,8 +60,8 @@ public class AddressController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado!");
         }
     }
-    //DELETA POR ID
-    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteAddress(@PathVariable("id") Integer id) {
         Optional<Address> optionalAddress = addressRepository.findById(id);
