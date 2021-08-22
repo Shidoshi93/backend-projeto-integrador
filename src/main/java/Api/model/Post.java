@@ -1,6 +1,7 @@
 package Api.model;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "post_pi")

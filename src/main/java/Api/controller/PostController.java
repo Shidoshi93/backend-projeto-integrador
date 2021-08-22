@@ -1,12 +1,12 @@
 package Api.controller;
 
 import Api.model.Post;
-import Api.model.User;
 import Api.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,18 +20,20 @@ public class PostController {
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public String addPost(@RequestBody Post post) {
-        postRepository.save(post);
-       return "Post adicionado com sucesso.";
+    public String addPost(@RequestBody Post newPost) {
+        postRepository.save(newPost);
+        return "Post adicionado com sucesso.";
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public Post getPost(@PathVariable Integer id) {
         Optional<Post> post = postRepository.findById(id);
-
-        return post.orElse(null);
-
+        if (post.isPresent()){
+            return post.get();
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Post não encontrado!");
+        }
     }
 
     @RequestMapping(value = "/listAll", method = RequestMethod.GET)
@@ -42,18 +44,29 @@ public class PostController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.OK)
-    public void updatePost(@PathVariable Integer id, @RequestBody Post post) {
-        postRepository.findById(id).map(record -> {
+    public Post  updatePost(@PathVariable Integer id, @RequestBody Post post) {
+        Optional<Post> optionalPost = postRepository.findById(id);
+        if (optionalPost.isPresent()){
+        optionalPost.map(record -> {
             record.setDescription(post.getDescription());
             record.setQtd(post.getQtd());
             Post updated = postRepository.save(record);
             return ResponseEntity.ok().body(updated);
-        }).orElse(ResponseEntity.notFound().build());
+        });
+            return optionalPost.get();
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Post não encontrado!");
+        }
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletePost(@PathVariable Integer id) {
-        postRepository.deleteById(id);
+        Optional<Post> optionalPost = postRepository.findById(id);
+        if (optionalPost.isPresent()) {
+            postRepository.deleteById(id);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Post não encontrado!");
+        }
     }
 }
