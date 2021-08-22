@@ -29,6 +29,8 @@ public class User {
     @Column(name = "user_img", nullable = true)
     private String user_img;
 
+
+
     public User(){
 
     }

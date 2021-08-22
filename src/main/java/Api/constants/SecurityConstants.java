@@ -1,7 +1,8 @@
 package Api.constants;
 
 public class SecurityConstants {
-    public static final String SIGN_UP_URL = "/user/add";
+    public static final String SIGN_UP_URL = "/user/save";
+    public static final String GET_POSTS = "/post/listAll";
     public static final String[] AUTH_LIST = {
             // -- swagger ui
             "**/swagger-resources/**",

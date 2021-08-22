@@ -43,12 +43,12 @@ public class PostController {
     @RequestMapping(value = "/{id}", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.OK)
     public void updatePost(@PathVariable Integer id, @RequestBody Post post) {
-        postRepository.findById(id).map(record -> {
-            record.setDescription(post.getDescription());
-            record.setQtd(post.getQtd());
-            Post updated = postRepository.save(record);
-            return ResponseEntity.ok().body(updated);
-        }).orElse(ResponseEntity.notFound().build());
+            postRepository.findById(id).map(record -> {
+                record.setDescription(post.getDescription());
+                record.setQtd(post.getQtd());
+                Post updated = postRepository.save(record);
+                return ResponseEntity.ok().body(updated);
+            }).orElse(ResponseEntity.notFound().build());
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
