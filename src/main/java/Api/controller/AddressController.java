@@ -1,6 +1,7 @@
 package Api.controller;
 
 import Api.model.Address;
+import Api.model.User;
 import Api.repository.AddressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,6 +40,17 @@ public class AddressController {
             return optionalAddress.get();
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Endereço não encontrado!");
+        }
+    }
+
+    @RequestMapping(value = "/userId/{user_id}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public Address getAddresByUserId(@PathVariable("user_id") Integer user_id) {
+        Optional<Address> optionalUser = Optional.ofNullable(addressRepository.findByUserId(user_id));
+        if (optionalUser.isPresent()){
+            return optionalUser.get();
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Address não encontrado!");
         }
     }
 
