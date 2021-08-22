@@ -3,6 +3,8 @@ package Api.controller;
 import Api.model.Post;
 import Api.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +36,12 @@ public class PostController {
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Post não encontrado!");
         }
+    }
+
+    @GetMapping(value = "/listAll/page")
+    public List<Post> paginacaoComParametro(Pageable pageable) {
+        Page<Post> page = postRepository.findAll(pageable);
+        return page.getContent();
     }
 
     @RequestMapping(value = "/listAll", method = RequestMethod.GET)

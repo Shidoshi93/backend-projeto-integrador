@@ -30,11 +30,15 @@ public class Post {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @ManyToOne
+    @JoinColumn(name = "address_id")
+    private Address address;
+
     public Post(){
 
     }
 
-    public Post(Integer id, String user_type, String donation_type, String description, Integer qtd, String status, User user) {
+    public Post(Integer id, String user_type, String donation_type, String description, Integer qtd, String status, User user, Address address) {
         this.id = id;
         this.user_type = user_type;
         this.donation_type = donation_type;
@@ -42,13 +46,14 @@ public class Post {
         this.qtd = qtd;
         this.status = status;
         this.user = user;
+        this.address = address;
     }
 
-    public int getPost_id() {
+    public int getId() {
         return id;
     }
 
-    public void setPost_id(Integer id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -98,6 +103,14 @@ public class Post {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package api.controller;
 
 import Api.controller.PostController;
+import Api.model.Address;
 import Api.model.Post;
 import Api.model.User;
 import Api.repository.PostRepository;
@@ -31,13 +32,14 @@ public class PostControllerTest {
     @Autowired
     private MockMvc mockMvc;
     private  User user;
+    private Address address;
 
     @MockBean
     PostRepository postRepository;
 
     @Test
     public void shouldNotReturnPostWithoutParam() throws Exception {
-        Optional<Post> post = Optional.of(new Post(2, "doador", "cesta básica", "Preciso de duas cestas básicas", 2, "ativo", user));
+        Optional<Post> post = Optional.of(new Post(2, "doador", "cesta básica", "Preciso de duas cestas básicas", 2, "ativo", user, address));
         when(postRepository.findById(0)).thenReturn(post);
         this.mockMvc.perform(get("/post/")
                 .accept(MediaType.APPLICATION_JSON))
@@ -47,7 +49,7 @@ public class PostControllerTest {
 
     @Test
     public void shouldNotReturnUserWithDiferentParam() throws Exception {
-        Post post = new Post(2, "doador", "cesta básica", "Preciso de duas cestas básicas", 2, "ativo", user);
+        Post post = new Post(2, "doador", "cesta básica", "Preciso de duas cestas básicas", 2, "ativo", user, address);
         when(postRepository.findById(2)).thenReturn(Optional.of(post));
         this.mockMvc.perform(get("/post/getPost/4")
                 .accept(MediaType.APPLICATION_JSON))
