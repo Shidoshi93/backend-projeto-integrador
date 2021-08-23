@@ -44,8 +44,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration conf = new CorsConfiguration().applyPermitDefaultValues();
-        conf.setAllowedOriginPatterns(Collections.singletonList("http://localhost:3000/"));
-        conf.setAllowedOrigins(Collections.singletonList("http://localhost:3000/"));
+        conf.setAllowedOriginPatterns(Collections.singletonList("http://alcance.surge.sh/"));
+        conf.setAllowedOrigins(Collections.singletonList("http://alcance.surge.sh/"));
         conf.setAllowedMethods(Arrays.asList("GET","POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         conf.setExposedHeaders(Arrays.asList("token", "content-type"));
         conf.setAllowedHeaders(Arrays.asList("Authorization", "content-type"));
