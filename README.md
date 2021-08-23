@@ -17,6 +17,8 @@ Pessoas físicas interessadas em doar e receber e pessoas jurídicas interessada
 
 As solicitações e ofertas de doações ficam disponíveis em nossa central de doações e para ofertar, atender ou solicitar uma doação o usuário precisa se cadastrar na plataforma. Após o cadastro ele passa a ter uma página onde ele consegue criar, acessar e/ou gerenciar uma doação.
 
+O front-end do projeto foi desenvolvido em React.JS e o Back-end em Java com Spring.
+
 ##### Desenvolvedores: 
 Grupo 3:
 Daniel Ribeiro
